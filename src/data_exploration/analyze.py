@@ -26,8 +26,11 @@ def regex_split(df):
 
     #plot seperate histogram for question length, context length, turns, answer length
     #question length
-    plt.hist(df['question_length'], bins=15)
+    # plt.hist(df['question_length'], bins=20)
+    counts, bins = np.histogram(df['question_length'])
+    plt.stairs(counts, bins)
     plt.title('Question Length')
+    # plt.xticks
     plt.xlabel('Length')
     plt.ylabel('Frequency')
     plt.savefig('question_length.png')

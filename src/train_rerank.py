@@ -13,6 +13,8 @@ def main():
         'output_dir': './output',
         'max_num_seq_pairs_per_device': 32,
         'full_train_batch_size': 32,
+        # 'gradient_accumulation_steps': 2,
+        # 'per_gpu_train_batch_size': 16,
         'gradient_accumulation_steps': 32,
         'per_gpu_train_batch_size': 1,
         'num_train_epochs': 10,
@@ -37,6 +39,7 @@ def main():
         'fp16': False,
         'fp16_opt_level': 'O1',  # previous default was O2
         'per_gpu_eval_batch_size': 8,
+        # 'per_gpu_eval_batch_size': 16,
         'log_on_all_nodes': False,
         'world_size': 1,
         'global_rank': 0,

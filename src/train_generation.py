@@ -158,7 +158,8 @@ def measure_result(result_dict):
 
 def train(trainer,
           total_epoches=10,
-          batch_size=16,
+        #   batch_size=16,
+          batch_size=4,
           accumulation_steps=1,
           learning_rate=1e-4,
           warmup_ratio=0.1,
@@ -236,7 +237,8 @@ def train(trainer,
                 (epoch, total_score, model_path))
 
 
-def evaluate(trainer, batch_size=16, checkpoint_path=None):
+# def evaluate(trainer, batch_size=16, checkpoint_path=None):
+def evaluate(trainer, batch_size=4, checkpoint_path=None):
     model = trainer.model.model.generator.generator
     tokenizer = trainer.preprocessor.generation_tokenizer
     device = trainer.preprocessor.device
@@ -306,6 +308,7 @@ if __name__ == '__main__':
         eval_dataset=train_dataset[:100],
     )
 
-    train(trainer, batch_size=16, accumulation_steps=1, total_epoches=10, learning_rate=1e-4)
+    # train(trainer, batch_size=16, accumulation_steps=1, total_epoches=10, learning_rate=1e-4)
+    train(trainer, batch_size=4, accumulation_steps=4, total_epoches=10, learning_rate=1e-4)
     evaluate(trainer, checkpoint_path=os.path.join(trainer.model.model_dir,
                                                    'finetuned_model.bin'))

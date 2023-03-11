@@ -28,10 +28,21 @@ trainer = DocumentGroundedDialogRetrievalTrainer(
     train_dataset=train_dataset,
     eval_dataset=train_dataset,
     all_passages=all_passages)
+
 trainer.train(
-    batch_size=128,
+    # batch_size=128,
+    batch_size=16,
     total_epoches=50,
 )
 trainer.evaluate(
     checkpoint_path=os.path.join(trainer.model.model_dir,
                                  'finetuned_model.bin'))
+
+
+# ret -> top 20 pids
+# reranker -> cross-encoder query, top 20 (contains gold R@20=1), (q+pi) cls repr, cls - linear - score, for all 20 pairs, loss = exp(q+p_gold)/sum(exp(q+pi)) 
+#   how to chose: p- -> at entire index level 
+    # train better reranker using french, negatives pids are non-gold retrieved pids
+
+# not train anything, just evaluate using their checkpoint without training
+# 
