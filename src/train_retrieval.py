@@ -6,14 +6,20 @@ from modelscope.msdatasets import MsDataset
 from modelscope.trainers.nlp.document_grounded_dialog_retrieval_trainer import \
     DocumentGroundedDialogRetrievalTrainer
 from modelscope.utils.constant import DownloadMode
+from datasets import load_dataset
 
-fr_train_dataset = MsDataset.load(
-    'DAMO_ConvAI/FrDoc2BotRetrieval',
-    download_mode=DownloadMode.FORCE_REDOWNLOAD)
+fr_train_dataset = load_dataset('json', data_files='./data/splits/FrDoc2BotRetrieval_train.json')['train']
+vi_train_dataset = load_dataset('json', data_files='./data/splits/ViDoc2BotRetrieval_train.json')['train']
 
-vi_train_dataset = MsDataset.load(
-    'DAMO_ConvAI/ViDoc2BotRetrieval',
-    download_mode=DownloadMode.FORCE_REDOWNLOAD)
+# fr_train_dataset_origin = MsDataset.load(
+#     'DAMO_ConvAI/FrDoc2BotRetrieval',
+#     download_mode=DownloadMode.FORCE_REDOWNLOAD)
+
+# vi_train_dataset_origin  = MsDataset.load(
+#     'DAMO_ConvAI/ViDoc2BotRetrieval',
+#     download_mode=DownloadMode.FORCE_REDOWNLOAD)
+
+# breakpoint()
 
 train_dataset = [x for dataset in [fr_train_dataset, vi_train_dataset] for x in dataset]
 
@@ -31,8 +37,8 @@ trainer = DocumentGroundedDialogRetrievalTrainer(
 
 trainer.train(
     # batch_size=128,
-    accumulation_steps=8,
-    batch_size=16,
+    accumulation_steps=4,
+    batch_size=32,
     total_epoches=50,
 )
 trainer.evaluate(
