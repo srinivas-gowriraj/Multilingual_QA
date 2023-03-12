@@ -166,3 +166,4 @@ src/input.jsonl
 .gitignore
 src/output/
 src/data/splits/
+src/data/input.jsonl
