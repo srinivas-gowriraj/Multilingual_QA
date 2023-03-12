@@ -7,30 +7,30 @@ class hparams:
         "french": {
             "retrieval":{ 
                 "modelscope_url": 'DAMO_ConvAI/FrDoc2BotRetrieval',
-                "path": os.path.join(data_dir, "FrDoc2BotRetrieval"),
+                "path": os.path.join(data_dir, "splits", "FrDoc2BotRetrieval"),
             },
             "rerank":{ 
                 "modelscope_url": 'DAMO_ConvAI/FrDoc2BotRerank',
-                "path": os.path.join(data_dir, "FrDoc2BotRerank"),
+                "path": os.path.join(data_dir, "splits", "FrDoc2BotRerank"),
             },
             "generation":{ 
                 "modelscope_url": 'DAMO_ConvAI/FrDoc2BotGeneration',
-                "path": os.path.join(data_dir, "FrDoc2BotGeneration"),
+                "path": os.path.join(data_dir, "splits", "FrDoc2BotGeneration"),
             },
             "short_name": "fr"
         },
         "vietnamese": {
             "retrieval":{ 
                 "modelscope_url": 'DAMO_ConvAI/ViDoc2BotRetrieval',
-                "path": os.path.join(data_dir, "ViDoc2BotRetrieval"),
+                "path": os.path.join(data_dir, "splits", "ViDoc2BotRetrieval"),
             },
             "rerank":{ 
                 "modelscope_url": 'DAMO_ConvAI/ViDoc2BotRerank',
-                "path": os.path.join(data_dir, "ViDoc2BotRerank"),
+                "path": os.path.join(data_dir, "splits", "ViDoc2BotRerank"),
             },
             "generation":{ 
                 "modelscope_url": 'DAMO_ConvAI/ViDoc2BotGeneration',
-                "path": os.path.join(data_dir, "ViDoc2BotGeneration"),
+                "path": os.path.join(data_dir, "splits", "ViDoc2BotGeneration"),
             },
             "short_name": "vi"
         }
