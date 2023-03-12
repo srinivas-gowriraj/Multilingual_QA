@@ -3,15 +3,15 @@ import json
 from modelscope.trainers.nlp.document_grounded_dialog_retrieval_trainer import \
     DocumentGroundedDialogRetrievalTrainer
 
-with open('dev.json') as f_in:
-    with open('input.jsonl', 'w') as f_out:
+with open('data/dev.json') as f_in:
+    with open('data/input.jsonl', 'w') as f_out:
         for line in f_in.readlines():
             sample = json.loads(line)
             sample['positive'] = ''
             sample['negative'] = ''
             f_out.write(json.dumps(sample, ensure_ascii=False) + '\n')
 
-with open('input.jsonl') as f:
+with open('data/input.jsonl') as f:
     eval_dataset = [json.loads(line) for line in f.readlines()]
 
 all_passages = []

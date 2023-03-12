@@ -31,6 +31,7 @@ trainer = DocumentGroundedDialogRetrievalTrainer(
 
 trainer.train(
     # batch_size=128,
+    accumulation_steps=8,
     batch_size=16,
     total_epoches=50,
 )

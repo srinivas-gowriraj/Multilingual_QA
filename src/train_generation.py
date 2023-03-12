@@ -157,10 +157,12 @@ def measure_result(result_dict):
 
 
 def train(trainer,
+          # total_epoches=10,
           total_epoches=10,
         #   batch_size=16,
           batch_size=4,
-          accumulation_steps=1,
+          # accumulation_steps=1,
+          accumulation_steps=4,
           learning_rate=1e-4,
           warmup_ratio=0.1,
           weight_decay=0.1,

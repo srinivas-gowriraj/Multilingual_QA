@@ -72,7 +72,7 @@ def main():
     pipeline_ins = myDocumentGroundedDialogRerankPipeline(
         model=model, preprocessor=mypreprocessor, **args)
 
-    file_in = open('./input.jsonl', 'r')
+    file_in = open('./data/input.jsonl', 'r')
     all_querys = []
     for every_query in file_in:
         all_querys.append(json.loads(every_query))
