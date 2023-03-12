@@ -15,7 +15,7 @@ def main():
             hf_dataset  = dataset.to_hf_dataset().train_test_split(test_size = hp.test_size, seed = hp.seed)
             hf_train_dataset = hf_dataset['train']
             hf_val_dataset = hf_dataset['test']
-            os.makedirs(lang_paths[stage]['path'], exist_ok=True)
+            os.makedirs(os.path.dirname(lang_paths[stage]['path']), exist_ok=True)
             hf_train_dataset.to_json(f"{lang_paths[stage]['path']}_train.json")
             hf_val_dataset.to_json(f"{lang_paths[stage]['path']}_val.json")
 
