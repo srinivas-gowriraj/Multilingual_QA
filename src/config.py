@@ -2,7 +2,9 @@ import os
 class hparams:
     seed=11797
     test_size = 0.2
-    data_dir = "/home/sohamdit/Multilingual_QA/src/data"
+    root_dir = "/home/sohamdit/Multilingual_QA/"
+    data_dir = os.path.join(root_dir, "src", "data")
+    all_passages_dir = os.path.join(root_dir, "src", "all_passages")
     num_bm25_docs = 10
     lang_data_paths = {
         "french": {
