@@ -8,8 +8,10 @@ from modelscope.trainers.nlp.document_grounded_dialog_retrieval_trainer import \
 from modelscope.utils.constant import DownloadMode
 from datasets import load_dataset
 
-fr_train_dataset = load_dataset('json', data_files='./data/splits/FrDoc2BotRetrieval_train.json')['train']
-vi_train_dataset = load_dataset('json', data_files='./data/splits/ViDoc2BotRetrieval_train.json')['train']
+fr_train_dataset = load_dataset('json', data_files="data/splits/FrDoc2BotRetrieval_train.json")["train"]
+fr_val_dataset = load_dataset('json', data_files="data/splits/FrDoc2BotRetrieval_val.json")["train"]
+
+
 vi_train_dataset = load_dataset('json', data_files="data/splits/ViDoc2BotRetrieval_train.json")["train"]
 vi_val_dataset = load_dataset('json', data_files="data/splits/ViDoc2BotRetrieval_val.json")["train"]
 
