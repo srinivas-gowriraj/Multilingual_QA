@@ -2,6 +2,7 @@ from modelscope.msdatasets import MsDataset
 from modelscope.trainers.nlp.document_grounded_dialog_rerank_trainer import \
     DocumentGroundedDialogRerankTrainer
 from modelscope.utils.constant import DownloadMode
+from datasets import load_dataset
 
 
 def main():
@@ -50,10 +51,20 @@ def main():
     args[
         'gradient_accumulation_steps'] = args['full_train_batch_size'] // (
             args['per_gpu_train_batch_size'] * args['world_size'])
-    train_dataset = MsDataset.load(
+    '''train_dataset = MsDataset.load(
         'DAMO_ConvAI/FrDoc2BotRerank',
         download_mode=DownloadMode.FORCE_REDOWNLOAD,
-        split='train')
+        split='train')'''
+    fr_train_dataset = load_dataset('json', data_files='./data/splits/FrDoc2BotRerank_train.json')['train']
+    vi_train_dataset = load_dataset('json', data_files='./data/splits/FrDoc2BotRerank_train.json')['train']
+    
+    # fr_val_dataset = load_dataset('json', data_files='./data/splits/FrDoc2BotRerank_val.json')['train']
+    # vi_val_dataset = load_dataset('json', data_files='./data/splits/FrDoc2BotRerank_val.json')['train']
+
+
+    train_dataset = [x for dataset in [fr_train_dataset, vi_train_dataset] for x in dataset]
+    #val_dataset = [y for dataset in [fr_val_dataset, vi_val_dataset] for y in dataset]
+    
     trainer = DocumentGroundedDialogRerankTrainer(
         model='DAMO_ConvAI/nlp_convai_ranking_pretrain', dataset=train_dataset, args=args)
     trainer.train()
