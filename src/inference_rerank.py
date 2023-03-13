@@ -112,7 +112,6 @@ def main():
         positive_pids_list.append(str([]))
     evaluate_dataset = {'input': input_list, 'id': ids_list, 'passages': passages_list, 'output': output_list,
                         'positive_pids': positive_pids_list}
-    breakpoint()
     pipeline_ins(evaluate_dataset)
     pipeline_ins.save(f'./rerank_output.jsonl')
 

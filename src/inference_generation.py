@@ -26,7 +26,7 @@ trainer = DocumentGroundedDialogGenerateTrainer(
 )
 evaluate(trainer, checkpoint_path=os.path.join(trainer.model.model_dir,
                                                'finetuned_model.bin'))
-breakpoint()
+
 with open(f'{cache_path}/evaluate_result.json') as f:
     predictions = json.load(f)['outputs']
 

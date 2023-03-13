@@ -18,7 +18,6 @@ all_passages = []
 for file_name in ['fr', 'vi']:
     with open(f'all_passages/{file_name}.json') as f:
         all_passages += json.load(f)
-breakpoint()
 
 cache_path = './DAMO_ConvAI/nlp_convai_retrieval_pretrain'
 trainer = DocumentGroundedDialogRetrievalTrainer(
