@@ -6,6 +6,7 @@ class hparams:
     data_dir = os.path.join(root_dir, "src", "data")
     all_passages_dir = os.path.join(root_dir, "src", "all_passages")
     num_bm25_docs = 10
+    available_languages = ["french", "vietnamese", "chinese", "english"]
     lang_data_paths = {
         "french": {
             "preprocessed_available": True,
@@ -21,7 +22,8 @@ class hparams:
                 "modelscope_url": 'DAMO_ConvAI/FrDoc2BotGeneration',
                 "path": os.path.join(data_dir, "splits", "FrDoc2BotGeneration"),
             },
-            "short_name": "fr"
+            "short_name": "fr",
+            "passage_path": os.path.join(data_dir, "all_passages", "fr.json")
         },
         "vietnamese": {
             "preprocessed_available": True,
@@ -37,7 +39,8 @@ class hparams:
                 "modelscope_url": 'DAMO_ConvAI/ViDoc2BotGeneration',
                 "path": os.path.join(data_dir, "splits", "ViDoc2BotGeneration"),
             },
-            "short_name": "vi"
+            "short_name": "vi",
+            "passage_path": os.path.join(data_dir, "all_passages", "vi.json")
         },
         "chinese": {
             "preprocessed_available": False,
@@ -52,7 +55,8 @@ class hparams:
             "generation":{ 
                 "path": os.path.join(data_dir, "splits", "ZhDoc2BotGeneration"),
             },
-            "short_name": "zh"
+            "short_name": "zh",
+            "passage_path": os.path.join(data_dir, "all_passages", "zh.json")
         },
         "english": {
             "preprocessed_available": False,
@@ -67,6 +71,7 @@ class hparams:
             "generation":{ 
                 "path": os.path.join(data_dir, "splits", "EnDoc2BotGeneration"),
             },
-            "short_name": "en"
+            "short_name": "en",
+            "passage_path": os.path.join(data_dir, "all_passages", "en.json")
         }
     }

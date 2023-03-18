@@ -65,6 +65,8 @@ def test_similarity_for_retrieval_data(language, path):
     ds = load_dataset('json', data_files=path)['train']
     sent_sim = SentenceSimilarity(language=language)
     all_scores = []
+    num_pos_greater = 0
+    num_neg_greater = 0
     for i in tqdm(range(len(ds))):
         query = ds[i]['query']
         positive = ds[i]['positive']
@@ -72,7 +74,18 @@ def test_similarity_for_retrieval_data(language, path):
         pos_score = sent_sim.cosine_similarity(query, positive)
         neg_score = sent_sim.cosine_similarity(query, negative)
         all_scores.append((pos_score, neg_score))
-        breakpoint()
+        if pos_score > neg_score:
+            num_pos_greater += 1
+        else:
+            num_neg_greater += 1
+
+    print(f"Number of total sample for {language}. {len(all_scores)}")
+
+    print(f"Number of pos>neg: {num_pos_greater}")
+    print(f"Percentage pos>neg: {num_pos_greater/len(all_scores)*100}%")
+
+    print(f"Number of pos<neg: {num_neg_greater}")
+    print(f"Percentage pos<neg: {num_neg_greater/len(all_scores)*100}%")
         
 
 
