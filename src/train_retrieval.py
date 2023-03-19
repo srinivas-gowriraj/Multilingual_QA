@@ -18,14 +18,14 @@ def main(args):
 
     all_passages = []
     train_dataset = val_dataset = []
-    lang_data_paths = hp['lang_data_paths']
+    lang_data_paths = hp.lang_data_paths
     for language in args.languages:
-        retr_train_fp = f"{lang_data_paths[language]["retrieval"]["path"]}_train.json"
-        retr_val_fp = f"{lang_data_paths[language]["retrieval"]["path"]}_val.json"
+        retr_train_fp = f"{lang_data_paths[language]['retrieval']['path']}_train.json"
+        retr_val_fp = f"{lang_data_paths[language]['retrieval']['path']}_val.json"
         train_dataset.append(load_dataset('json', data_files=retr_train_fp)["train"])
         val_dataset.append(load_dataset('json', data_files=retr_val_fp)["train"])
 
-        with open(lang_data_paths["language"]["passage_path"], "r") as f:
+        with open(lang_data_paths[language]["passage_path"], "r") as f:
             all_passages += json.load(f)
 
     train_dataset = [x for dataset in train_dataset for x in dataset]
