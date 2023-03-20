@@ -1,6 +1,7 @@
 import os, shutil
 import json
 import argparse
+import torch
 
 from modelscope.hub.snapshot_download import snapshot_download
 from modelscope.msdatasets import MsDataset
@@ -40,11 +41,16 @@ def main(args):
         train_dataset=train_dataset,
         eval_dataset=val_dataset,
         all_passages=all_passages)
+    
+    if args.model_checkpoint is not None:
+        state_dict = torch.load(args.model_checkpoint)
+        trainer.model.model.load_state_dict(state_dict)
+        print(f"Loaded model weights from {args.model_checkpoint}. Will continue training.")
 
     trainer.train(
         # batch_size=128,
-        accumulation_steps=4,
-        batch_size=32,
+        accumulation_steps=16,
+        batch_size=8,
         total_epoches=50,
     )
 
@@ -65,6 +71,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-l", '--languages', nargs='+', default=hp.available_languages)
     parser.add_argument("-ofp", '--output_file_path', type=str, required=True, help="File path where you want to save the retrieval model weights, with '.bin' extension.")
+    parser.add_argument('-mc', '--model_checkpoint', type=str, required=False, default=None)
     args = parser.parse_args()
     main(args)
 

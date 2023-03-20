@@ -56,7 +56,7 @@ def main():
         download_mode=DownloadMode.FORCE_REDOWNLOAD,
         split='train')'''
     fr_train_dataset = load_dataset('json', data_files='./data/splits/FrDoc2BotRerank_train.json')['train']
-    vi_train_dataset = load_dataset('json', data_files='./data/splits/FrDoc2BotRerank_train.json')['train']
+    vi_train_dataset = load_dataset('json', data_files='./data/splits/ViDoc2BotRerank_train.json')['train']
     
     # fr_val_dataset = load_dataset('json', data_files='./data/splits/FrDoc2BotRerank_val.json')['train']
     # vi_val_dataset = load_dataset('json', data_files='./data/splits/FrDoc2BotRerank_val.json')['train']

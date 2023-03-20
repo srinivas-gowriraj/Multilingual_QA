@@ -67,7 +67,7 @@ class BM25Search:
 
 
 
-def main(args):
+def download_data(args):
     for language in args.languages:
         lang_paths =  hp.lang_data_paths[language]
 
@@ -90,26 +90,23 @@ def main(args):
             hf_dataset = dataset.to_hf_dataset()
             os.makedirs(os.path.dirname(lang_paths['default_data_path']), exist_ok=True)
             hf_dataset.to_json(f"{lang_paths['default_data_path']}.json")
-            print("line 93")
             # 2. generate passages.csv for that language
             all_passages = []
             all_ids = []
 
-            for i in range(len(hf_dataset)):
+            for i in tqdm(range(len(hf_dataset))):
                 passage = eval(hf_dataset['passages'][i])
                 all_passages += passage
                 all_ids += [i] * len(passage)
-            print("line 102")
                 
             all_passages_df = pd.DataFrame({"passage": all_passages, 'ids': all_ids})
             # all_passages_df["passage"].to_csv(os.path.join(hp.data_dir, f"{language}_passages.csv"), header=False, index=False)
             all_passages_df.to_csv(os.path.join(hp.data_dir, "all_passages", f"{language}_passages_w_ids.csv"))
-            print("line 107")
-            with open(os.path.join(hp.data_dir, "all_passages", f"{lang_paths['short_name']}.json"), "w") as f:
+            with open(os.path.join(hp.all_passages_dir, f"{lang_paths['short_name']}.json"), "w") as f:
                 f.write(json.dumps(all_passages, indent=4))
             print(f"Number of passages extracted for {language} dialogue data = {len(all_passages)}.")
-            breakpoint()
             bm25 = BM25Search(documents=all_passages_df["passage"], language=language)
+
 
              # 3. generate retriever data
             retriever_data = {"query": [], "positive":[], "negative":[]}
@@ -135,7 +132,7 @@ def main(args):
             retriver_splits["train"].to_json(f"{lang_paths['retrieval']['path']}_train.json")
             retriver_splits["test"].to_json(f"{lang_paths['retrieval']['path']}_val.json")
 
-            # 4. generate rerank data
+
 
             # 5. generate generation data
 
@@ -143,6 +140,6 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("-l", '--languages', nargs='+', default=hp.available_languages)
+    parser.add_argument("-l", '--languages', nargs='+', choices=hp.available_languages, default=hp.available_languages)
     args = parser.parse_args()
     main(args)
