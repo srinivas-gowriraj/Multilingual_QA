@@ -4,7 +4,7 @@ from modelscope.trainers.nlp.document_grounded_dialog_generate_trainer import \
     DocumentGroundedDialogGenerateTrainer
 from train_generation import evaluate
 
-with open('all_passages/id_to_passage.json') as f:
+with open('all_passages/id_to_passage_old.json') as f:
     id_to_passage = json.load(f)
 breakpoint()
 eval_dataset = []
