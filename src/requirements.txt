@@ -7,3 +7,6 @@ rouge==1.0.1
 faiss-cpu
 faiss-gpu
 scikit-learn
+jieba
+rank-bm25
+sentencepiece

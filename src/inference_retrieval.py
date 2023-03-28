@@ -34,7 +34,7 @@ def main(args):
     for file_name in passage_languages:
         with open(f'all_passages/{file_name}.json') as f:
             all_passages += json.load(f)
-    
+    breakpoint()
     if args.model_type == "xlmr":
         # cache_path = snapshot_download('DAMO_ConvAI/nlp_convai_retrieval_pretrain', cache_dir='./')
         # trainer = DocumentGroundedDialogRetrievalTrainer(

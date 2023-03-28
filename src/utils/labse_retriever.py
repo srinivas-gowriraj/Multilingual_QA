@@ -238,13 +238,13 @@ class DocumentGroundedDialogRetrievalPreprocessorLabse(Preprocessor):
 #     module_name=Trainers.document_grounded_dialog_retrieval_trainer_labse)
 class DocumentGroundedDialogRetrievalTrainerLabse(EpochBasedTrainer):
 
-    def __init__(self, model_save_path, device=torch.device('cuda:0'), *args, **kwargs):
+    def __init__(self, model_save_path, device=torch.device('cuda'), *args, **kwargs):
         self.preprocessor = DocumentGroundedDialogRetrievalPreprocessorLabse()
         self.device = self.preprocessor.device
         # self.model = BertModel.from_pretrained("setu4993/LaBSE").to(self.device)
         self.model = LabseDPRModel().to(self.device)
         self.model_save_path = model_save_path
-        self.output_dir_created = False
+        os.makedirs(os.path.dirname(self.model_save_path), exist_ok = True)
         self.train_dataset = kwargs['train_dataset']
         self.eval_dataset = kwargs['eval_dataset']
         self.all_passages = kwargs['all_passages']
@@ -324,9 +324,6 @@ class DocumentGroundedDialogRetrievalTrainerLabse(EpochBasedTrainer):
             if total_score >= best_score:
                 best_score = total_score
                 state_dict = self.model.state_dict()
-                if not self.output_dir_created:
-                    os.makedirs(os.path.dirname(self.model_save_path), exist_ok = True)
-                    self.output_dir_created = True
                 torch.save(state_dict, self.model_save_path)
                 logger.info(
                     'epoch %d obtain max score: %.4f, saving model to %s' %
