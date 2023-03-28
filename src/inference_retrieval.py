@@ -27,14 +27,27 @@ def main(args):
     if "vietnamese" in args.languages:
         temp_datasets.append(load_dataset('json', data_files='./data/splits/ViDoc2BotRetrieval_val.json')['train'])
         passage_languages.append('vi')
-
+        
     eval_dataset = [x for dataset in temp_datasets for x in dataset]
+        
+    if args.leaderboard_submission:
+        with open(args.leaderboard_file) as f_in:
+            with open('input.jsonl', 'w') as f_out:
+                for line in f_in.readlines():
+                    sample = json.loads(line)
+                    sample['positive'] = ''
+                    sample['negative'] = ''
+                    f_out.write(json.dumps(sample, ensure_ascii=False) + '\n')
+        with open('input.jsonl') as f:
+            eval_dataset = [json.loads(line) for line in f.readlines()]
 
+    
     all_passages = []
     for file_name in passage_languages:
         with open(f'all_passages/{file_name}.json') as f:
             all_passages += json.load(f)
-    breakpoint()
+            
+    
     if args.model_type == "xlmr":
         # cache_path = snapshot_download('DAMO_ConvAI/nlp_convai_retrieval_pretrain', cache_dir='./')
         # trainer = DocumentGroundedDialogRetrievalTrainer(
@@ -73,5 +86,7 @@ if __name__ == "__main__":
     parser.add_argument('-mt', '--model_type', type=str, default='xlmr', choices=['xlmr', 'labse'])
     parser.add_argument("-l", '--languages', nargs='+', default=["french", "vietnamese"])
     parser.add_argument('-mc', '--model_checkpoint', type=str, required=False, default=None)
+    parser.add_argument('-ls', '--leaderboard_submission', type=bool, required=False, default=False)
+    parser.add_argument('-lb', '--leaderboard_file', type=str, required=False, default=None)
     args = parser.parse_args()
     main(args)
