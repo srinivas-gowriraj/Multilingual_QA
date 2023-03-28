@@ -6,7 +6,7 @@ from train_generation import evaluate
 
 with open('all_passages/id_to_passage_old.json') as f:
     id_to_passage = json.load(f)
-breakpoint()
+#breakpoint()
 eval_dataset = []
 with open('rerank_output.jsonl') as f:
     for line in f.readlines():
