@@ -53,7 +53,10 @@ def main(args):
     
     if args.model_checkpoint is not None:
         state_dict = torch.load(args.model_checkpoint)
-        trainer.model.model.load_state_dict(state_dict)
+        if args.model_type == "labse":
+            trainer.model.load_state_dict(state_dict)
+        elif args.model_type == "xlmr":
+            trainer.model.model.load_state_dict(state_dict)
         print(f"Loaded model weights from {args.model_checkpoint}. Will continue training.")
 
     trainer.train(
