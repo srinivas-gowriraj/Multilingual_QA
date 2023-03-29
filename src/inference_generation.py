@@ -3,11 +3,14 @@ import json
 from modelscope.trainers.nlp.document_grounded_dialog_generate_trainer import \
     DocumentGroundedDialogGenerateTrainer
 from train_generation import evaluate
+from datasets import load_dataset
 
 with open('all_passages/id_to_passage_old.json') as f:
     id_to_passage = json.load(f)
 #breakpoint()
-eval_dataset = []
+
+
+'''eval_dataset = []
 with open('rerank_output.jsonl') as f:
     for line in f.readlines():
         sample = json.loads(line)
@@ -16,7 +19,10 @@ with open('rerank_output.jsonl') as f:
             'rerank': json.dumps([id_to_passage[x['wikipedia_id']] for x in sample['output'][0]['provenance']],
                                  ensure_ascii=False),
             'response': '<response> @'
-        })
+        })'''
+
+eval_dataset = load_dataset('json', data_files='/home/sgowrira/Multilingual_QA/src/data/splits/FrDoc2BotGeneration_val.json')['train']
+
 
 cache_path = './DAMO_ConvAI/nlp_convai_generation_pretrain'
 trainer = DocumentGroundedDialogGenerateTrainer(
