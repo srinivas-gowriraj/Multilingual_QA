@@ -46,7 +46,7 @@ def process_retr_result_file(queries_file_path, retrieved_passages_file_path):
         all_queries.append(json.loads(every_query))
     passage_to_id = {}
     ptr = -1
-    for file_name in ['fr', 'vi', 'en', 'zh']:
+    for file_name in ['fr', 'vi']:
         with open(os.path.join(hp.all_passages_dir, f'{file_name}.json')) as f:
             all_passages = json.load(f)
             for every_passage in all_passages:
@@ -139,6 +139,6 @@ if __name__ == '__main__':
     parser.add_argument("-qfp", "--queries_file_path", default=os.path.join(hp.data_dir, 'input.jsonl'), type=str)
     parser.add_argument("-edfp", "--eval_dataset_file_path", help="File path to json file containing processed eval data", type=str)
     parser.add_argument('-pr', "--preprocess", action="store_true")
-
     args = parser.parse_args()
+    
     main(args)

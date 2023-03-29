@@ -238,13 +238,13 @@ class DocumentGroundedDialogRetrievalPreprocessorLabse(Preprocessor):
 #     module_name=Trainers.document_grounded_dialog_retrieval_trainer_labse)
 class DocumentGroundedDialogRetrievalTrainerLabse(EpochBasedTrainer):
 
-    def __init__(self, model_save_path, device=torch.device('cuda:0'), *args, **kwargs):
+    def __init__(self, model_save_path, device=torch.device('cuda'), *args, **kwargs):
         self.preprocessor = DocumentGroundedDialogRetrievalPreprocessorLabse()
         self.device = self.preprocessor.device
         # self.model = BertModel.from_pretrained("setu4993/LaBSE").to(self.device)
         self.model = LabseDPRModel().to(self.device)
         self.model_save_path = model_save_path
-        os.makedirs(os.path.dirname(self.model_save_path), exist_ok=True)
+        os.makedirs(os.path.dirname(self.model_save_path), exist_ok = True)
         self.train_dataset = kwargs['train_dataset']
         self.eval_dataset = kwargs['eval_dataset']
         self.all_passages = kwargs['all_passages']

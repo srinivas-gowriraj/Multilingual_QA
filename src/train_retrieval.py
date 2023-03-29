@@ -26,8 +26,8 @@ def main(args):
     for language in args.languages:
         #retr_train_fp = f"{lang_data_paths[language]["retrieval"]["path"]}_train.json"
         #retr_val_fp = f"{lang_data_paths[language]["retrieval"]["path"]}_val.json"
-        retr_train_fp = f"{lang_data_paths[language]['retrieval']['path']}_train.json"
-        retr_val_fp = f"{lang_data_paths[language]['retrieval']['path']}_val.json"
+        retr_train_fp = f"{lang_data_paths[language]['stages']['retrieval']['path']}_train.json"
+        retr_val_fp = f"{lang_data_paths[language]['stages']['retrieval']['path']}_val.json"
         train_dataset.append(load_dataset('json', data_files=retr_train_fp)["train"])
         val_dataset.append(load_dataset('json', data_files=retr_val_fp)["train"])
 
@@ -61,8 +61,8 @@ def main(args):
 
     trainer.train(
         # batch_size=128,
-        accumulation_steps=16,
-        batch_size=8,
+        accumulation_steps=8,
+        batch_size=16,
         total_epoches=50,
     )
 

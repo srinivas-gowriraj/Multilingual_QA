@@ -73,16 +73,16 @@ def download_data(args):
 
         if hp.lang_data_paths[language]["preprocessed_available"]:
             # french and vietnamese
-            for stage in lang_paths:
+            for stage in lang_paths['stage']:
                 if stage == "short_name":
                     continue
-                dataset = MsDataset.load(lang_paths[stage]["modelscope_url"], download_mode=DownloadMode.FORCE_REDOWNLOAD)
+                dataset = MsDataset.load(lang_paths['stages'][stage]["modelscope_url"], download_mode=DownloadMode.FORCE_REDOWNLOAD)
                 hf_dataset  = dataset.to_hf_dataset().train_test_split(test_size = hp.test_size, seed = hp.seed)
                 hf_train_dataset = hf_dataset['train']
                 hf_val_dataset = hf_dataset['test']
-                os.makedirs(os.path.dirname(lang_paths[stage]['path']), exist_ok=True)
-                hf_train_dataset.to_json(f"{lang_paths[stage]['path']}_train.json")
-                hf_val_dataset.to_json(f"{lang_paths[stage]['path']}_val.json")
+                os.makedirs(os.path.dirname(lang_paths['stages'][stage]['path']), exist_ok=True)
+                hf_train_dataset.to_json(f"{lang_paths['stages'][stage]['path']}_train.json")
+                hf_val_dataset.to_json(f"{lang_paths['stages'][stage]['path']}_val.json")
         else:
             # english and chinese
             # 1. downloaded and saved provided json.
@@ -129,8 +129,8 @@ def download_data(args):
                 retriever_data["negative"].append(negative)
             retriever_hf_ds = Dataset.from_dict(retriever_data)
             retriver_splits = retriever_hf_ds.train_test_split(test_size=hp.test_size, seed=hp.seed)
-            retriver_splits["train"].to_json(f"{lang_paths['retrieval']['path']}_train.json")
-            retriver_splits["test"].to_json(f"{lang_paths['retrieval']['path']}_val.json")
+            retriver_splits["train"].to_json(f"{lang_paths['stages']['retrieval']['path']}_train.json")
+            retriver_splits["test"].to_json(f"{lang_paths['stages']['retrieval']['path']}_val.json")
 
 
 
@@ -142,4 +142,4 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-l", '--languages', nargs='+', choices=hp.available_languages, default=hp.available_languages)
     args = parser.parse_args()
-    main(args)
+    download_data(args)
