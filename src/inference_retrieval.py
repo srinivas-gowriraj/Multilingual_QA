@@ -31,7 +31,7 @@ def main(args):
     eval_dataset = [x for dataset in temp_datasets for x in dataset]
         
     if args.leaderboard_submission:
-        with open(args.leaderboard_file) as f_in:
+        with open(args.leaderboard_input_file) as f_in:
             with open('input.jsonl', 'w') as f_out:
                 for line in f_in.readlines():
                     sample = json.loads(line)
@@ -40,7 +40,6 @@ def main(args):
                     f_out.write(json.dumps(sample, ensure_ascii=False) + '\n')
         with open('input.jsonl') as f:
             eval_dataset = [json.loads(line) for line in f.readlines()]
-
     
     all_passages = []
     for file_name in passage_languages:
@@ -79,14 +78,14 @@ def main(args):
             train_dataset=None,
             eval_dataset=eval_dataset,
             all_passages=all_passages)
-        trainer.evaluate()
+        trainer.evaluate(checkpoint_path=args.model_checkpoint)
                             
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-mt', '--model_type', type=str, default='xlmr', choices=['xlmr', 'labse'])
     parser.add_argument("-l", '--languages', nargs='+', default=["french", "vietnamese"])
     parser.add_argument('-mc', '--model_checkpoint', type=str, required=False, default=None)
-    parser.add_argument('-ls', '--leaderboard_submission', type=bool, required=False, default=False)
-    parser.add_argument('-lb', '--leaderboard_file', type=str, required=False, default=None)
+    parser.add_argument('-ls', '--leaderboard_submission', action="store_true")
+    parser.add_argument('-lb', '--leaderboard_input_file', type=str, required=False, default=hp.leaderboard_input_file)
     args = parser.parse_args()
     main(args)
