@@ -10,6 +10,7 @@ class hparams:
         self.all_passages_dir = os.path.join(self.data_dir, "all_passages")
         self.num_bm25_docs = 10
         self.data_processing_stages = [0, 1, 2, 3, 4]
+        self.leaderboard_input_file = os.path.join(self.data_dir, "dev.json")
         self.lang_data_paths = {
             "french": {
                 "preprocessed_available": True,

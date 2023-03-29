@@ -86,7 +86,7 @@ if __name__ == "__main__":
     parser.add_argument('-mt', '--model_type', type=str, default='xlmr', choices=['xlmr', 'labse'])
     parser.add_argument("-l", '--languages', nargs='+', default=hp.available_languages)
     parser.add_argument("-ofp", '--output_file_path', type=str, required=True, help="File path where you want to save the retrieval model weights, with '.bin' extension.")
-    parser.add_argument('-mc', '--model_checkpoint', type=str, required=False, default=None)
+    parser.add_argument('-mc', '--model_checkpoint', type=str, required=False, default=None, help="input model checkpoint where you want to load weights and continue training from")
     args = parser.parse_args()
     main(args)
 
