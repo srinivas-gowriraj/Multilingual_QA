@@ -12,6 +12,7 @@ from datasets import load_dataset
 
 from config import hparams
 from utils.labse_retriever import DocumentGroundedDialogRetrievalTrainerLabse
+from utils.huggingface_retriever import DocumentGroundedDialogRetrievalTrainerHF
 
 hp = hparams()
 
@@ -50,20 +51,34 @@ def main(args):
             train_dataset=train_dataset,
             eval_dataset=val_dataset,
             all_passages=all_passages)
-    
+    elif args.model_type == "roberta_hf":
+        trainer = DocumentGroundedDialogRetrievalTrainerHF(
+            model_save_path=args.output_file_path,
+            hf_checkpoint="roberta-base",
+            train_dataset=train_dataset,
+            eval_dataset=val_dataset,
+            all_passages=all_passages)
+    elif args.model_type == "xlmr_hf":
+        trainer = DocumentGroundedDialogRetrievalTrainerHF(
+            model_save_path=args.output_file_path,
+            hf_checkpoint="xlm-roberta-base",
+            train_dataset=train_dataset,
+            eval_dataset=val_dataset,
+            all_passages=all_passages)
+
     if args.model_checkpoint is not None:
         state_dict = torch.load(args.model_checkpoint)
-        if args.model_type == "labse":
-            trainer.model.load_state_dict(state_dict)
-        elif args.model_type == "xlmr":
+        if args.model_type == "xlmr":
             trainer.model.model.load_state_dict(state_dict)
+        else:
+            trainer.model.load_state_dict(state_dict)
         print(f"Loaded model weights from {args.model_checkpoint}. Will continue training.")
 
     trainer.train(
         # batch_size=128,
-        accumulation_steps=8,
-        batch_size=16,
-        total_epoches=50,
+        accumulation_steps=args.accumulation_steps,
+        batch_size=args.batch_size,
+        total_epoches=args.num_epochs,
     )
 
     if args.model_type == "xlmr":
@@ -83,10 +98,13 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('-mt', '--model_type', type=str, default='xlmr', choices=['xlmr', 'labse'])
+    parser.add_argument('-mt', '--model_type', type=str, default='xlmr', choices=['xlmr', 'labse', 'xlmr_hf', 'roberta_hf'])
     parser.add_argument("-l", '--languages', nargs='+', default=hp.available_languages)
     parser.add_argument("-ofp", '--output_file_path', type=str, required=True, help="File path where you want to save the retrieval model weights, with '.bin' extension.")
     parser.add_argument('-mc', '--model_checkpoint', type=str, required=False, default=None, help="input model checkpoint where you want to load weights and continue training from")
+    parser.add_argument('-as', '--accumulation_steps', type=int, required=False, default=8, help="Number of gradient accumulation steps")
+    parser.add_argument('-bs', '--batch_size', type=int, required=False, default=16, help="Model batch size")
+    parser.add_argument('-ne', '--num_epochs', type=int, required=False, default=50, help="Number of epochs to train model")
     args = parser.parse_args()
     main(args)
 

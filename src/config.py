@@ -5,7 +5,7 @@ class hparams:
     def __init__(self):
         self.seed = 11797
         self.test_size = 0.2
-        self.root_dir = "/usr0/home/sohamdit/Multilingual_QA/"
+        self.root_dir = "/home/sohamdit/Multilingual_QA/"
         self.data_dir = os.path.join(self.root_dir, "src", "data")
         self.all_passages_dir = os.path.join(self.data_dir, "all_passages")
         self.num_bm25_docs = 10
