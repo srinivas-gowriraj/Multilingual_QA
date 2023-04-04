@@ -37,6 +37,9 @@ def main(args):
 
     train_dataset = [x for dataset in train_dataset for x in dataset]
     val_dataset = [y for dataset in val_dataset for y in dataset]
+    if args.domain is not None:
+        val_dataset = [i for i in train_dataset if i["positive"].split("//")[-1]== (" "+ lang_data_paths[language]["short_name"]+ "-" + args.domain)]
+        
 
     if args.model_type == "xlmr":
         cache_path = snapshot_download('DAMO_ConvAI/nlp_convai_retrieval_pretrain', cache_dir='./')
@@ -105,6 +108,7 @@ if __name__ == "__main__":
     parser.add_argument('-as', '--accumulation_steps', type=int, required=False, default=8, help="Number of gradient accumulation steps")
     parser.add_argument('-bs', '--batch_size', type=int, required=False, default=16, help="Model batch size")
     parser.add_argument('-ne', '--num_epochs', type=int, required=False, default=50, help="Number of epochs to train model")
+    parser.add_argument('-d', '--domain', type=str, required=False, default=None, help="Specify the domain for Vietnamese and French data")
     args = parser.parse_args()
     main(args)
 
