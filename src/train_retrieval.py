@@ -38,7 +38,7 @@ def main(args):
     train_dataset = [x for dataset in train_dataset for x in dataset]
     val_dataset = [y for dataset in val_dataset for y in dataset]
     if args.domain is not None:
-        val_dataset = [i for i in train_dataset if i["positive"].split("//")[-1]== (" "+ lang_data_paths[language]["short_name"]+ "-" + args.domain)]
+        val_dataset = [i for i in  val_dataset if i["positive"].split("//")[-1]== (" "+ lang_data_paths[language]["short_name"]+ "-" + args.domain)]
         
 
     if args.model_type == "xlmr":
