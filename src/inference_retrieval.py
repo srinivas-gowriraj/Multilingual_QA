@@ -29,6 +29,15 @@ def main(args):
         passage_languages.append('vi')
         
     eval_dataset = [x for dataset in temp_datasets for x in dataset]
+    if args.domain is not None:
+      eval_dataset_fr = []
+      eval_dataset_vi = []
+      if "french" in args.languages:
+        eval_dataset_fr = [i for i in  eval_dataset if i["positive"].split("//")[-1]== (" fr"+ "-" + args.domain)]
+      if "vietnamese" in args.languages:
+        eval_dataset_vi = [i for i in  eval_dataset if i["positive"].split("//")[-1]== (" vi"+ "-" + args.domain)]
+      eval_dataset = eval_dataset_fr.append(eval_dataset_vi)
+        
         
     if args.leaderboard_submission:
         with open(args.leaderboard_input_file) as f_in:
@@ -87,5 +96,6 @@ if __name__ == "__main__":
     parser.add_argument('-mc', '--model_checkpoint', type=str, required=False, default=None)
     parser.add_argument('-ls', '--leaderboard_submission', action="store_true")
     parser.add_argument('-lb', '--leaderboard_input_file', type=str, required=False, default=hp.leaderboard_input_file)
+    parser.add_argument('-d', '--domain', type=str, required=False, default=None, help="Specify the domain for Vietnamese and French data")
     args = parser.parse_args()
     main(args)
