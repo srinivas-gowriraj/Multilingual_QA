@@ -21,7 +21,8 @@ def main(args):
         raise Exception("Provide output_file_path with the desired name and '.bin' extension")
 
     all_passages = []
-    train_dataset = val_dataset = []
+    train_dataset = []
+    val_dataset = []
     #lang_data_paths = hp['lang_data_paths']
     lang_data_paths = hp.lang_data_paths
     for language in args.languages:
@@ -31,13 +32,11 @@ def main(args):
         retr_val_fp = f"{lang_data_paths[language]['stages']['retrieval']['path']}_val.json"
         train_dataset.append(load_dataset('json', data_files=retr_train_fp)["train"])
         val_dataset.append(load_dataset('json', data_files=retr_val_fp)["train"])
-
         with open(lang_data_paths[language]["passage_path"], "r") as f:
             all_passages += json.load(f)
 
     train_dataset = [x for dataset in train_dataset for x in dataset]
     val_dataset = [y for dataset in val_dataset for y in dataset]
-
     if args.model_type == "xlmr":
         cache_path = snapshot_download('DAMO_ConvAI/nlp_convai_retrieval_pretrain', cache_dir='./')
         trainer = DocumentGroundedDialogRetrievalTrainer(
