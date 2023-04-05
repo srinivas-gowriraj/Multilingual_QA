@@ -68,6 +68,30 @@ def main(args):
             train_dataset=train_dataset,
             eval_dataset=val_dataset,
             all_passages=all_passages)
+    
+    elif args.model_type == "bert_fr_hf":
+        trainer = DocumentGroundedDialogRetrievalTrainerHF(
+            model_save_path=args.output_file_path,
+            hf_checkpoint="dbmdz/bert-base-french-europeana-cased",
+            train_dataset=train_dataset,
+            eval_dataset=val_dataset,
+            all_passages=all_passages)
+
+    elif args.model_type == "bert_vi_hf":
+        trainer = DocumentGroundedDialogRetrievalTrainerHF(
+            model_save_path=args.output_file_path,
+            hf_checkpoint="trituenhantaoio/bert-base-vietnamese-uncased",
+            train_dataset=train_dataset,
+            eval_dataset=val_dataset,
+            all_passages=all_passages)
+    elif args.model_type == "mbert_hf":
+        trainer = DocumentGroundedDialogRetrievalTrainerHF(
+            model_save_path=args.output_file_path,
+            hf_checkpoint="bert-base-multilingual-cased",
+            train_dataset=train_dataset,
+            eval_dataset=val_dataset,
+            all_passages=all_passages)
+    
 
     if args.model_checkpoint is not None:
         state_dict = torch.load(args.model_checkpoint)
@@ -101,7 +125,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('-mt', '--model_type', type=str, default='xlmr', choices=['xlmr', 'labse', 'xlmr_hf', 'roberta_hf'])
+    parser.add_argument('-mt', '--model_type', type=str, default='xlmr', choices=['xlmr', 'labse', 'xlmr_hf', 'roberta_hf', 'bert_fr_hf', 'bert_vi_hf', 'mbert_hf'])
     parser.add_argument("-l", '--languages', nargs='+', default=hp.available_languages)
     parser.add_argument("-ofp", '--output_file_path', type=str, required=True, help="File path where you want to save the retrieval model weights, with '.bin' extension.")
     parser.add_argument('-mc', '--model_checkpoint', type=str, required=False, default=None, help="input model checkpoint where you want to load weights and continue training from")
