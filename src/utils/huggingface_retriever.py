@@ -142,7 +142,7 @@ def measure_result(result_dict):
 #     Fields.nlp, module_name=Preprocessors.document_grounded_dialog_retrieval_labse)
 class DocumentGroundedDialogRetrievalPreprocessorHF(Preprocessor):
 
-    def __init__(self, model_dir: str="", hf_chekcpoint = "roberta-base", *args, **kwargs):
+    def __init__(self, model_dir: str="", hf_checkpoint = "roberta-base", *args, **kwargs):
         """The preprocessor for DGDS retrieval task, based on transformers' tokenizer.
         Args:
             model_dir: The model dir containing the essential files to build the tokenizer.
@@ -150,7 +150,7 @@ class DocumentGroundedDialogRetrievalPreprocessorHF(Preprocessor):
         super().__init__(*args, **kwargs)
 
         self.model_dir: str = model_dir
-        self.hf_chekcpoint = hf_chekcpoint
+        self.hf_checkpoint = hf_checkpoint
         # self.config = Config.from_file(
         #     os.path.join(self.model_dir, ModelFile.CONFIGURATION))
         self.device = 'cuda' \
@@ -158,7 +158,7 @@ class DocumentGroundedDialogRetrievalPreprocessorHF(Preprocessor):
             else 'cpu'
         # self.query_sequence_length = self.config['query_sequence_length']
         # self.context_sequence_length = self.config['context_sequence_length']
-        self.tokenizer = AutoTokenizer.from_pretrained(self.hf_chekcpoint)
+        self.tokenizer = AutoTokenizer.from_pretrained(self.hf_checkpoint)
 
     @type_assert(object, Dict)
     def __call__(self,
@@ -175,6 +175,7 @@ class DocumentGroundedDialogRetrievalPreprocessorHF(Preprocessor):
                 query,
                 padding=True,
                 return_tensors='pt',
+                max_length=512,
                 # max_length=self.query_sequence_length,
                 truncation=True)
 
@@ -182,6 +183,7 @@ class DocumentGroundedDialogRetrievalPreprocessorHF(Preprocessor):
                 positive + negative,
                 padding=True,
                 return_tensors='pt',
+                max_length=512,
                 # max_length=self.context_sequence_length,
                 truncation=True)
 
@@ -200,6 +202,7 @@ class DocumentGroundedDialogRetrievalPreprocessorHF(Preprocessor):
                 query,
                 padding=True,
                 return_tensors='pt',
+                max_length=512,
                 # max_length=self.query_sequence_length,
                 truncation=True)
             result = {
@@ -212,6 +215,7 @@ class DocumentGroundedDialogRetrievalPreprocessorHF(Preprocessor):
                 context,
                 padding=True,
                 return_tensors='pt',
+                max_length=512,
                 # max_length=self.context_sequence_length,
                 truncation=True)
             result = {
