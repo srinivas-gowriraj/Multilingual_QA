@@ -167,3 +167,4 @@ src/input.jsonl
 src/output/
 src/data/splits/
 src/data/input.jsonl
+src/data/finetuned_models

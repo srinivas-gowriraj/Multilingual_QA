@@ -1,5 +1,5 @@
 modelscope==1.3.0
-torch==1.12.1
+# torch==1.12.1
 tqdm==4.64.1
 sacrebleu==2.2.1
 transformers==4.10.0
@@ -7,3 +7,6 @@ rouge==1.0.1
 faiss-cpu
 faiss-gpu
 scikit-learn
+jieba
+rank-bm25
+sentencepiece

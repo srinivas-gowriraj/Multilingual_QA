@@ -10,24 +10,15 @@ import tqdm
 from torch.utils.data import DataLoader
 from transformers import AdamW, get_scheduler
 from torch.utils.checkpoint import checkpoint
-from transformers import BertModel, BertTokenizerFast
+from transformers import AutoModel, AutoTokenizer
 
-# from modelscope.metainfo import Trainers
-# from modelscope.models import Model
-# from modelscope.preprocessors import \
-#     DocumentGroundedDialogRetrievalPreprocessor
 from modelscope.trainers import EpochBasedTrainer
 from modelscope.trainers.builder import TRAINERS
 from modelscope.utils.constant import ModeKeys
 from modelscope.utils.logger import get_logger
 
-# from modelscope.metainfo import Preprocessors
 from modelscope.preprocessors import Preprocessor
-# from modelscope.preprocessors.builder import PREPROCESSORS
-# from modelscope.utils.config import Config
-# from modelscope.models.base import Tensor, TorchModel
 from modelscope.models.base import Tensor
-# from modelscope.utils.constant import Fields, ModeKeys, ModelFile
 from modelscope.utils.constant import ModeKeys
 from modelscope.utils.type_assert import type_assert
 
@@ -42,12 +33,12 @@ class Wrapper(nn.Module):
     def forward(self, input_ids, attention_mask, dummy_tensor):
         return self.encoder(input_ids, attention_mask).pooler_output
 
-class LabseDPRModel(nn.Module):
+class HFDPRModel(nn.Module):
 
-    def __init__(self):
+    def __init__(self, checkpoint="roberta-base"):
         super().__init__()
-        self.qry_encoder = Wrapper(BertModel.from_pretrained("setu4993/LaBSE"))
-        self.ctx_encoder = Wrapper(BertModel.from_pretrained("setu4993/LaBSE"))
+        self.qry_encoder = Wrapper(AutoModel.from_pretrained(checkpoint))
+        self.ctx_encoder = Wrapper(AutoModel.from_pretrained(checkpoint))
         self.loss_fct = nn.CrossEntropyLoss()
 
     @staticmethod
@@ -149,9 +140,9 @@ def measure_result(result_dict):
 
 # @PREPROCESSORS.register_module(
 #     Fields.nlp, module_name=Preprocessors.document_grounded_dialog_retrieval_labse)
-class DocumentGroundedDialogRetrievalPreprocessorLabse(Preprocessor):
+class DocumentGroundedDialogRetrievalPreprocessorHF(Preprocessor):
 
-    def __init__(self, model_dir: str="", *args, **kwargs):
+    def __init__(self, model_dir: str="", hf_checkpoint = "roberta-base", *args, **kwargs):
         """The preprocessor for DGDS retrieval task, based on transformers' tokenizer.
         Args:
             model_dir: The model dir containing the essential files to build the tokenizer.
@@ -159,6 +150,7 @@ class DocumentGroundedDialogRetrievalPreprocessorLabse(Preprocessor):
         super().__init__(*args, **kwargs)
 
         self.model_dir: str = model_dir
+        self.hf_checkpoint = hf_checkpoint
         # self.config = Config.from_file(
         #     os.path.join(self.model_dir, ModelFile.CONFIGURATION))
         self.device = 'cuda' \
@@ -166,7 +158,7 @@ class DocumentGroundedDialogRetrievalPreprocessorLabse(Preprocessor):
             else 'cpu'
         # self.query_sequence_length = self.config['query_sequence_length']
         # self.context_sequence_length = self.config['context_sequence_length']
-        self.tokenizer = BertTokenizerFast.from_pretrained("setu4993/LaBSE")
+        self.tokenizer = AutoTokenizer.from_pretrained(self.hf_checkpoint)
 
     @type_assert(object, Dict)
     def __call__(self,
@@ -183,6 +175,7 @@ class DocumentGroundedDialogRetrievalPreprocessorLabse(Preprocessor):
                 query,
                 padding=True,
                 return_tensors='pt',
+                max_length=512,
                 # max_length=self.query_sequence_length,
                 truncation=True)
 
@@ -190,6 +183,7 @@ class DocumentGroundedDialogRetrievalPreprocessorLabse(Preprocessor):
                 positive + negative,
                 padding=True,
                 return_tensors='pt',
+                max_length=512,
                 # max_length=self.context_sequence_length,
                 truncation=True)
 
@@ -208,6 +202,7 @@ class DocumentGroundedDialogRetrievalPreprocessorLabse(Preprocessor):
                 query,
                 padding=True,
                 return_tensors='pt',
+                max_length=512,
                 # max_length=self.query_sequence_length,
                 truncation=True)
             result = {
@@ -220,6 +215,7 @@ class DocumentGroundedDialogRetrievalPreprocessorLabse(Preprocessor):
                 context,
                 padding=True,
                 return_tensors='pt',
+                max_length=512,
                 # max_length=self.context_sequence_length,
                 truncation=True)
             result = {
@@ -236,13 +232,13 @@ class DocumentGroundedDialogRetrievalPreprocessorLabse(Preprocessor):
 
 # @TRAINERS.register_module(
 #     module_name=Trainers.document_grounded_dialog_retrieval_trainer_labse)
-class DocumentGroundedDialogRetrievalTrainerLabse(EpochBasedTrainer):
+class DocumentGroundedDialogRetrievalTrainerHF(EpochBasedTrainer):
 
-    def __init__(self, model_save_path, device=torch.device('cuda'), *args, **kwargs):
-        self.preprocessor = DocumentGroundedDialogRetrievalPreprocessorLabse()
+    def __init__(self, model_save_path, device=torch.device('cuda'), hf_checkpoint="roberta-base", *args, **kwargs):
+        self.hf_checkpoint = hf_checkpoint
+        self.preprocessor = DocumentGroundedDialogRetrievalPreprocessorHF(hf_checkpoint=self.hf_checkpoint)
         self.device = self.preprocessor.device
-        # self.model = BertModel.from_pretrained("setu4993/LaBSE").to(self.device)
-        self.model = LabseDPRModel().to(self.device)
+        self.model = HFDPRModel(self.hf_checkpoint).to(self.device)
         self.model_save_path = model_save_path
         os.makedirs(os.path.dirname(self.model_save_path), exist_ok = True)
         self.train_dataset = kwargs['train_dataset']
