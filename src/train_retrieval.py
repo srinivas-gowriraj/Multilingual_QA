@@ -106,6 +106,7 @@ def main(args):
             trainer.model.model.load_state_dict(state_dict)
         else:
             trainer.model.load_state_dict(state_dict)
+        del state_dict
         print(f"Loaded model weights from {args.model_checkpoint}. Will continue training.")
 
     trainer.train(
