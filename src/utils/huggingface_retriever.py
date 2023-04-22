@@ -332,6 +332,7 @@ class DocumentGroundedDialogRetrievalTrainerHF(EpochBasedTrainer):
         if checkpoint_path is not None:
             state_dict = torch.load(checkpoint_path)
             self.model.load_state_dict(state_dict)
+            print(f'load model from {checkpoint_path}')
 
         valid_loader = DataLoader(
             dataset=self.eval_dataset,
