@@ -42,7 +42,8 @@ def main(args):
         
 
     if args.model_type == "xlmr":
-        cache_path = snapshot_download('DAMO_ConvAI/nlp_convai_retrieval_pretrain', cache_dir='./')
+        # cache_path = snapshot_download('DAMO_ConvAI/nlp_convai_retrieval_pretrain', cache_dir='./')
+        cache_path = './DAMO_ConvAI/nlp_convai_retrieval_pretrain'
         trainer = DocumentGroundedDialogRetrievalTrainer(
             model=cache_path,
             train_dataset=train_dataset,
