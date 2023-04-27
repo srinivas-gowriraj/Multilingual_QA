@@ -85,6 +85,22 @@ class hparams:
                 },
                 "short_name": "en",
                 "passage_path": os.path.join(self.data_dir, "all_passages", "en.json")
+            },
+            "english_gpt": {
+                "preprocessed_available": False,
+                "stages": {
+                    "retrieval": {
+                        "path": os.path.join(self.data_dir, "gpt_splits", "EnDoc2BotRetrieval_gpt"),
+                    },
+                    # "rerank": {
+                    #     "path": os.path.join(self.data_dir, "splits", "EnDoc2BotRerank"),
+                    # },
+                    # "generation": {
+                    #     "path": os.path.join(self.data_dir, "splits", "EnDoc2BotGeneration"),
+                    # },
+                },
+                "short_name": "en_gpt",
+                "passage_path": os.path.join(self.data_dir, "all_passages", "en.json")
             }
         }
         self.available_languages = list(self.lang_data_paths.keys())
