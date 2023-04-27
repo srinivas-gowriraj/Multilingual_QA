@@ -30,12 +30,20 @@ def main(args):
         temp_datasets.append(load_dataset(
             'json', data_files=f"{lang_data_paths['french']['stages']['retrieval']['path']}_val.json")['train'])
         passage_languages.append('fr')
+    if "french_gpt" in args.languages:
+        temp_datasets.append(load_dataset(
+            'json', data_files=f"{lang_data_paths['french_gpt']['stages']['retrieval']['path']}_val.json")['train'])
+        passage_languages.append('fr')
     if "vietnamese" in args.languages:
         temp_datasets.append(load_dataset(
-            'json', data_files='./data/splits/ViDoc2BotRetrieval_val.json')['train'])
+            'json', data_files=f"{lang_data_paths['vietnamese']['stages']['retrieval']['path']}_val.json")['train'])
+        passage_languages.append('vi')
+    if "vietnamese_gpt" in args.languages:
+        temp_datasets.append(load_dataset(
+            'json', data_files=f"{lang_data_paths['vietnamese_gpt']['stages']['retrieval']['path']}_val.json")['train'])
         passage_languages.append('vi')
     eval_dataset = [x for dataset in temp_datasets for x in dataset]
-!    if args.domain is not None:
+    if args.domain is not None:
         eval_dataset_fr = []
         eval_dataset_vi = []
         if "french" in args.languages:
@@ -59,7 +67,7 @@ def main(args):
             eval_dataset = [json.loads(line) for line in f.readlines()]
 
     all_passages = []
-    for file_name in passage_languages:
+    for file_name in set(passage_languages):
         with open(f'all_passages/{file_name}.json') as f:
             all_passages += json.load(f)
 
