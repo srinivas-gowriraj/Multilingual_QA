@@ -36,7 +36,7 @@ class hparams:
                 "stages": {
                     "retrieval": {
                         # "modelscope_url": 'DAMO_ConvAI/FrDoc2BotRetrieval',
-                        "path": os.path.join(self.data_dir, "gpt_splits", "FrDoc2BotRetrieval"),
+                        "path": os.path.join(self.data_dir, "gpt_splits", "FrDoc2BotRetrieval_gpt"),
                     },
                     # "rerank": {
                     #     "modelscope_url": 'DAMO_ConvAI/FrDoc2BotRerank',
@@ -74,7 +74,7 @@ class hparams:
                 "stages": {
                     "retrieval": {
                         # "modelscope_url": 'DAMO_ConvAI/FrDoc2BotRetrieval',
-                        "path": os.path.join(self.data_dir, "gpt_splits", "ViDoc2BotRetrieval"),
+                        "path": os.path.join(self.data_dir, "gpt_splits", "ViDoc2BotRetrieval_gpt"),
                     },
                     # "rerank": {
                     #     "modelscope_url": 'DAMO_ConvAI/FrDoc2BotRerank',
