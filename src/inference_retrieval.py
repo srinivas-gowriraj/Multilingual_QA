@@ -34,6 +34,10 @@ def main(args):
         temp_datasets.append(load_dataset(
             'json', data_files=f"{lang_data_paths['french_gpt']['stages']['retrieval']['path']}_val.json")['train'])
         passage_languages.append('fr')
+    if "french_2k_last_turn" in args.languages:
+        temp_datasets.append(load_dataset(
+            'json', data_files=f"{lang_data_paths['french_2k_last_turn']['stages']['retrieval']['path']}_val.json")['train'])
+        passage_languages.append('fr')
     if "vietnamese" in args.languages:
         temp_datasets.append(load_dataset(
             'json', data_files=f"{lang_data_paths['vietnamese']['stages']['retrieval']['path']}_val.json")['train'])
@@ -42,6 +46,11 @@ def main(args):
         temp_datasets.append(load_dataset(
             'json', data_files=f"{lang_data_paths['vietnamese_gpt']['stages']['retrieval']['path']}_val.json")['train'])
         passage_languages.append('vi')
+    if "vietnamese_2k_last_turn" in args.languages:
+        temp_datasets.append(load_dataset(
+            'json', data_files=f"{lang_data_paths['vietnamese_2k_last_turn']['stages']['retrieval']['path']}_val.json")['train'])
+        passage_languages.append('vi')
+    
     eval_dataset = [x for dataset in temp_datasets for x in dataset]
     if args.domain is not None:
         eval_dataset_fr = []
@@ -52,7 +61,6 @@ def main(args):
         if "vietnamese" in args.languages:
             eval_dataset_vi = [i for i in eval_dataset if i["positive"].split(
                 "//")[-1] == (" vi" + "-" + args.domain)]
-        breakpoint()
         eval_dataset = eval_dataset_fr + eval_dataset_vi
 
     if args.leaderboard_submission:

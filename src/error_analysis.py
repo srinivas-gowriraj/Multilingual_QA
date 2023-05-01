@@ -19,20 +19,38 @@ hp = hparams()
 
 def load_data(args):
     temp_datasets = []
+    passage_languages = []
     lang_data_paths = hp.lang_data_paths
 
     if "french" in args.languages:
-        temp_datasets.append(load_dataset('json', data_files=f"{lang_data_paths['french']['stages']['retrieval']['path']}_val.json")['train'])
+        temp_datasets.append(load_dataset(
+            'json', data_files=f"{lang_data_paths['french']['stages']['retrieval']['path']}_val.json")['train'])
+        passage_languages.append('fr')
+    if "french_gpt" in args.languages:
+        temp_datasets.append(load_dataset(
+            'json', data_files=f"{lang_data_paths['french_gpt']['stages']['retrieval']['path']}_val.json")['train'])
+        passage_languages.append('fr')
+    if "french_2k_last_turn" in args.languages:
+        temp_datasets.append(load_dataset(
+            'json', data_files=f"{lang_data_paths['french_2k_last_turn']['stages']['retrieval']['path']}_val.json")['train'])
+        passage_languages.append('fr')
     if "vietnamese" in args.languages:
-        temp_datasets.append(load_dataset('json', data_files='./data/splits/ViDoc2BotRetrieval_val.json')['train'])
+        temp_datasets.append(load_dataset(
+            'json', data_files=f"{lang_data_paths['vietnamese']['stages']['retrieval']['path']}_val.json")['train'])
+        passage_languages.append('vi')
+    if "vietnamese_gpt" in args.languages:
+        temp_datasets.append(load_dataset(
+            'json', data_files=f"{lang_data_paths['vietnamese_gpt']['stages']['retrieval']['path']}_val.json")['train'])
+        passage_languages.append('vi')
+    if "vietnamese_2k_last_turn" in args.languages:
+        temp_datasets.append(load_dataset(
+            'json', data_files=f"{lang_data_paths['vietnamese_2k_last_turn']['stages']['retrieval']['path']}_val.json")['train'])
+        passage_languages.append('vi')
+    
     eval_dataset = [x for dataset in temp_datasets for x in dataset]
-    
-    
     return  eval_dataset
 
-
 def generate_embeddings(args):
-    
     if args.model == 'mbert':
         model_name = "bert-base-multilingual-cased"
         model = HFDPRModel(model_name)
@@ -89,8 +107,6 @@ def plot(args):
     lang_to_col = {'fr':'blue', 'vi': 'red'}
     domain_to_col = {'Health': 'red', 'Technology': 'blue', 'VeteransAffairs': 'green', 'HealthCareServices': 'yellow', 'Insurance': 'pink', 'PublicServices': 'black', 'SocialSecurity': 'brown', 'DepartmentOfMotorVehicles': 'purple', 'StudentFinancialAidinUSA': 'orange'}
     
-    
-    
     plt.scatter(x, y, c=df['language'].map(lang_to_col))
     plt.title('Language Specific Embeddings')
     handles = [plt.plot([],[], marker="o", ms=10, ls="", mec=None, color=color, 
@@ -109,7 +125,6 @@ def plot(args):
 
     #plt.legend(handles=handles, loc='upper right')
     plt.savefig('domain.png')
-    
     
     
 def len_analysis(args):
@@ -131,15 +146,12 @@ def len_analysis(args):
         else:
             total_lens[len_key]+=1
         
-        
-        
         if ground_truth!=bert_pred:
             if  len_key not in error_lens.keys():
                 error_lens[len_key]=1
             else:
                 error_lens[len_key]+=1
 
-        
     error_percentages = {}
     for key in error_lens.keys():
         error_percentages[key]=error_lens[key]/total_lens[key]
@@ -149,11 +161,6 @@ def len_analysis(args):
     #plt.savefig('lengths.png')
     print(total_lens)
     print(error_percentages)
-            
-    
-    
-    
-    
 
 def main(args):
     bert_results = json.load(open(args.bert_file))
@@ -221,13 +228,9 @@ def main(args):
     print('Domain Error Percentage ', domain_error_percentage)
     
     
-            
-            
-        
-
-
 if __name__=="__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument("-m", "--mode", type=str, choices=["main", "generate_embeddings", "plot", "len_analysis"])
     parser.add_argument('-bf', '--bert_file', type=str, default = "/home/sgowrira/Multilingual_QA/src/soham_models/retriever/mbert-hf/finetuned_vi_fr/evaluate_result.json")
     parser.add_argument('-lf', '--labse_file', type=str, default = "/home/sgowrira/Multilingual_QA/src/soham_models/retriever/labse/finetuned_vi_fr/evaluate_result.json" )
     parser.add_argument('-cp', '--checkpoint', type=str, default = '/home/sgowrira/Multilingual_QA/src/soham_models/retriever/mbert-hf/finetuned_vi_fr/model_weights.bin')
@@ -235,10 +238,17 @@ if __name__=="__main__":
     parser.add_argument('-m', '--model', type=str, default = 'mbert')
     parser.add_argument('-ef', '--embeddings_file', type=str, default = "/home/sgowrira/Multilingual_QA/src/mbert.csv")
     args = parser.parse_args()
-    #main(args)
-    #generate_embeddings(args)
-    #plot(args)
-    len_analysis(args)
+
+    if args.mode == "main":
+        main(args)
+    elif args.mode == "generate_embeddings":
+        generate_embeddings(args)
+    elif args.mode == "generate_embeddings":
+        plot(args)
+    elif args.mode == "generate_embeddings":
+        len_analysis(args)
+    else:
+        print(f"Such a function is not supported")
     
     
     

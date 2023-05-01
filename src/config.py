@@ -50,6 +50,25 @@ class hparams:
                 "short_name": "fr_gpt",
                 "passage_path": os.path.join(self.data_dir, "all_passages", "fr.json")
             },
+             "french_2k_last_turn": {
+                "preprocessed_available": True,
+                "stages": {
+                    "retrieval": {
+                        # "modelscope_url": 'DAMO_ConvAI/FrDoc2BotRetrieval',
+                        "path": os.path.join(self.data_dir, "gpt_splits", "FrDoc2BotRetrieval_2k_last_turn"),
+                    },
+                    # "rerank": {
+                    #     "modelscope_url": 'DAMO_ConvAI/FrDoc2BotRerank',
+                    #     "path": os.path.join(self.data_dir, "splits", "FrDoc2BotRerank"),
+                    # },
+                    # "generation": {
+                    #     "modelscope_url": 'DAMO_ConvAI/FrDoc2BotGeneration',
+                    #     "path": os.path.join(self.data_dir, "splits", "FrDoc2BotGeneration"),
+                    # },
+                },
+                "short_name": "fr_2kl",
+                "passage_path": os.path.join(self.data_dir, "all_passages", "fr.json")
+            },
             "vietnamese": {
                 "preprocessed_available": True,
                 "stages": {
@@ -86,6 +105,25 @@ class hparams:
                     # },
                 },
                 "short_name": "vi_gpt",
+                "passage_path": os.path.join(self.data_dir, "all_passages", "vi.json")
+            },
+            "vietnamese_2k_last_turn": {
+                "preprocessed_available": True,
+                "stages": {
+                    "retrieval": {
+                        # "modelscope_url": 'DAMO_ConvAI/FrDoc2BotRetrieval',
+                        "path": os.path.join(self.data_dir, "gpt_splits", "ViDoc2BotRetrieval_2k_last_turn"),
+                    },
+                    # "rerank": {
+                    #     "modelscope_url": 'DAMO_ConvAI/FrDoc2BotRerank',
+                    #     "path": os.path.join(self.data_dir, "splits", "FrDoc2BotRerank"),
+                    # },
+                    # "generation": {
+                    #     "modelscope_url": 'DAMO_ConvAI/FrDoc2BotGeneration',
+                    #     "path": os.path.join(self.data_dir, "splits", "FrDoc2BotGeneration"),
+                    # },
+                },
+                "short_name": "vi_2kl",
                 "passage_path": os.path.join(self.data_dir, "all_passages", "vi.json")
             },
             "chinese": {
@@ -126,20 +164,38 @@ class hparams:
             },
             "english_gpt": {
                 "preprocessed_available": False,
-                "modelscope_url": 'DAMO_ConvAI/EnDoc2BotDialogue',
-                "default_data_path": os.path.join(self.data_dir, "splits", "EnDoc2BotDialogue"),
+                # "modelscope_url": 'DAMO_ConvAI/EnDoc2BotDialogue',
+                # "default_data_path": os.path.join(self.data_dir, "splits", "EnDoc2BotDialogue"),
                 "stages": {
                     "retrieval": {
-                        "path": os.path.join(self.data_dir, "splits", "EnDoc2BotRetrieval"),
+                        "path": os.path.join(self.data_dir, "gpt_splits", "EnDoc2BotRetrieval_gpt"),
                     },
-                    "rerank": {
-                        "path": os.path.join(self.data_dir, "splits", "EnDoc2BotRerank"),
-                    },
-                    "generation": {
-                        "path": os.path.join(self.data_dir, "splits", "EnDoc2BotGeneration"),
-                    },
+                    # "rerank": {
+                    #     "path": os.path.join(self.data_dir, "splits", "EnDoc2BotRerank_gpt"),
+                    # },
+                    # "generation": {
+                    #     "path": os.path.join(self.data_dir, "splits", "EnDoc2BotGeneration_gpt"),
+                    # },
                 },
-                "short_name": "en",
+                "short_name": "en_gpt",
+                "passage_path": os.path.join(self.data_dir, "all_passages", "en.json")
+            },
+            "english_2k_last_turn": {
+                "preprocessed_available": False,
+                # "modelscope_url": 'DAMO_ConvAI/EnDoc2BotDialogue',
+                # "default_data_path": os.path.join(self.data_dir, "splits", "EnDoc2BotDialogue"),
+                "stages": {
+                    "retrieval": {
+                        "path": os.path.join(self.data_dir, "gpt_splits", "EnDoc2BotRetrieval_2k_last_turn"),
+                    },
+                    # "rerank": {
+                    #     "path": os.path.join(self.data_dir, "splits", "EnDoc2BotRerank"),
+                    # },
+                    # "generation": {
+                    #     "path": os.path.join(self.data_dir, "splits", "EnDoc2BotGeneration"),
+                    # },
+                },
+                "short_name": "en_2kl",
                 "passage_path": os.path.join(self.data_dir, "all_passages", "en.json")
             }
         }
