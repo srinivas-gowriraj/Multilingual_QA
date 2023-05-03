@@ -50,6 +50,25 @@ class hparams:
                 "short_name": "fr_gpt",
                 "passage_path": os.path.join(self.data_dir, "all_passages", "fr.json")
             },
+            "french_2k_raw": {
+                # "preprocessed_available": True,
+                "stages": {
+                    "retrieval": {
+                        # "modelscope_url": 'DAMO_ConvAI/FrDoc2BotRetrieval',
+                        "path": os.path.join(self.data_dir, "gpt_splits", "FrDoc2BotRetrieval"),
+                    },
+                    # "rerank": {
+                    #     "modelscope_url": 'DAMO_ConvAI/FrDoc2BotRerank',
+                    #     "path": os.path.join(self.data_dir, "splits", "FrDoc2BotRerank"),
+                    # },
+                    # "generation": {
+                    #     "modelscope_url": 'DAMO_ConvAI/FrDoc2BotGeneration',
+                    #     "path": os.path.join(self.data_dir, "splits", "FrDoc2BotGeneration"),
+                    # },
+                },
+                "short_name": "fr_2kr",
+                "passage_path": os.path.join(self.data_dir, "all_passages", "fr.json")
+            },
              "french_2k_last_turn": {
                 "preprocessed_available": True,
                 "stages": {
@@ -105,6 +124,25 @@ class hparams:
                     # },
                 },
                 "short_name": "vi_gpt",
+                "passage_path": os.path.join(self.data_dir, "all_passages", "vi.json")
+            },
+            "vietnamese_2k_raw": {
+                "preprocessed_available": True,
+                "stages": {
+                    "retrieval": {
+                        # "modelscope_url": 'DAMO_ConvAI/FrDoc2BotRetrieval',
+                        "path": os.path.join(self.data_dir, "gpt_splits", "ViDoc2BotRetrieval"),
+                    },
+                    # "rerank": {
+                    #     "modelscope_url": 'DAMO_ConvAI/FrDoc2BotRerank',
+                    #     "path": os.path.join(self.data_dir, "splits", "FrDoc2BotRerank"),
+                    # },
+                    # "generation": {
+                    #     "modelscope_url": 'DAMO_ConvAI/FrDoc2BotGeneration',
+                    #     "path": os.path.join(self.data_dir, "splits", "FrDoc2BotGeneration"),
+                    # },
+                },
+                "short_name": "vi_2kr",
                 "passage_path": os.path.join(self.data_dir, "all_passages", "vi.json")
             },
             "vietnamese_2k_last_turn": {
@@ -196,6 +234,42 @@ class hparams:
                     # },
                 },
                 "short_name": "en_2kl",
+                "passage_path": os.path.join(self.data_dir, "all_passages", "en.json")
+            },
+            "english_conqrr_rewritten_true": {
+                "preprocessed_available": False,
+                # "modelscope_url": 'DAMO_ConvAI/EnDoc2BotDialogue',
+                # "default_data_path": os.path.join(self.data_dir, "splits", "EnDoc2BotDialogue"),
+                "stages": {
+                    "retrieval": {
+                        "path": os.path.join(self.data_dir, "gpt_splits", "EnDoc2BotRetrieval_conqrr_rewritten_true"),
+                    },
+                    # "rerank": {
+                    #     "path": os.path.join(self.data_dir, "splits", "EnDoc2BotRerank"),
+                    # },
+                    # "generation": {
+                    #     "path": os.path.join(self.data_dir, "splits", "EnDoc2BotGeneration"),
+                    # },
+                },
+                "short_name": "en_crt",
+                "passage_path": os.path.join(self.data_dir, "all_passages", "en.json")
+            },
+             "english_conqrr_rewritten_false": {
+                "preprocessed_available": False,
+                # "modelscope_url": 'DAMO_ConvAI/EnDoc2BotDialogue',
+                # "default_data_path": os.path.join(self.data_dir, "splits", "EnDoc2BotDialogue"),
+                "stages": {
+                    "retrieval": {
+                        "path": os.path.join(self.data_dir, "gpt_splits", "EnDoc2BotRetrieval_conqrr_rewritten_false"),
+                    },
+                    # "rerank": {
+                    #     "path": os.path.join(self.data_dir, "splits", "EnDoc2BotRerank"),
+                    # },
+                    # "generation": {
+                    #     "path": os.path.join(self.data_dir, "splits", "EnDoc2BotGeneration"),
+                    # },
+                },
+                "short_name": "en_crf",
                 "passage_path": os.path.join(self.data_dir, "all_passages", "en.json")
             }
         }

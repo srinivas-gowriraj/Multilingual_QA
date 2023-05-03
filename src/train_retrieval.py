@@ -29,7 +29,7 @@ def main(args):
         #retr_train_fp = f"{lang_data_paths[language]["retrieval"]["path"]}_train.json"
         #retr_val_fp = f"{lang_data_paths[language]["retrieval"]["path"]}_val.json"
         retr_train_fp = f"{lang_data_paths[language]['stages']['retrieval']['path']}_train.json"
-        if "_gpt" in language or "_2k_last_turn" in language:
+        if "_gpt" in language or "_2k_last_turn" in language or "_conqrr_rewritten":
             retr_val_fp = f"{lang_data_paths[language[:language.index('_')]]['stages']['retrieval']['path']}_val.json"
         train_dataset.append(load_dataset('json', data_files=retr_train_fp)["train"])
         val_dataset.append(load_dataset('json', data_files=retr_val_fp)["train"])
