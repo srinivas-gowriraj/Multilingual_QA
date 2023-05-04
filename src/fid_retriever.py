@@ -15,12 +15,11 @@ from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import DataLoader, RandomSampler, DistributedSampler, SequentialSampler
 
 
-import src.slurm
-import src.util
-import src.evaluation
-import src.data
-import src.model
-from src.options import Options
+import slurm
+import util
+import evaluation
+import model
+from options import Options
 
 
 def train(model, optimizer, scheduler, global_step,
