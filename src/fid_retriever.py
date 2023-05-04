@@ -15,11 +15,11 @@ from torch.utils.tensorboard import SummaryWriter
 from torch.utils.data import DataLoader, RandomSampler, DistributedSampler, SequentialSampler
 
 
-import slurm
-import util
-import evaluation
-import model
-from options import Options
+import fidslurm
+import fidutil
+import fidevaluation
+import fidmodel
+from fidoptions import Options
 
 
 def train(model, optimizer, scheduler, global_step,
