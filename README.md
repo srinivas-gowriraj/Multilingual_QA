@@ -6,6 +6,8 @@
 3. `python 0_download_data_splits.py`
 4. Modify the arguments in `config.py` as needed
 5. Make sure that all the data files are present in the base directory folder specified by `config.py`
+6. Generate the GPT training and validation data splits by running `python gpt_generate_splits.py` which randomly selects 2k english training data and 500 vietnamese and french validation data
+7. Pass the GPT splits to ChatGPT model by running `gpt_prompting.py -l <language>` which will create the rewritten queries for the specified language.
 
 
 
